@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ equipamento.nome }} - CyberFit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .video-box {
+            margin-top: 15px;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            background: #e9f2ff;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="{% url 'home' %}">← Voltar para a lista</a>
+        <h1>{{ equipamento.nome }}</h1>
+        <p><strong>Descrição:</strong> {{ equipamento.descricao }}</p>
+
+        <h2>🎥 Vídeos e Instruções de Uso</h2>
+        {% for conteudo in conteudos %}
+        <div class="video-box">
+            <h3>{{ conteudo.titulo }}</h3>
+            <p>{{ conteudo.descricao }}</p>
+            <p><a href="{{ conteudo.link_video }}" target="_blank">Assistir ao vídeo tutorial →</a></p>
+        </div>
+        {% empty %}
+        <p>Nenhum vídeo cadastrado para este equipamento ainda.</p>
+        {% endfor %}
+    </div>
+</body>
+
+</html>

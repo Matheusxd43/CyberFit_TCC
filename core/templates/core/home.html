@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CyberFit - Equipamentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🏋️‍♂️ CyberFit - Painel do Aluno</h1>
+    <h2>Equipamentos Disponíveis</h2>
+
+    {% for equipamento in equipamentos %}
+    <div class="card">
+        <h3>{{ equipamento.nome }}</h3>
+        <p>{{ equipamento.descricao }}</p>
+        <a href="{% url 'detalhe_equipamento' equipamento.pk %}">Ver vídeos e instruções →</a>
+    </div>
+    {% empty %}
+    <p>Nenhum equipamento cadastrado ainda. Cadastre alguns no painel administrativo!</p>
+    {% endfor %}
+</body>
+
+</html>
