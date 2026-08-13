@@ -1,54 +1,112 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'core/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>{{ equipamento.nome }} - CyberFit</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f4f4f9;
-        }
+{% block title %}
+{{ equipamento.nome }} - CyberFit
+{% endblock %}
 
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+{% block content %}
 
-        .video-box {
-            margin-top: 15px;
-            padding: 10px;
-            border-left: 4px solid #007bff;
-            background: #e9f2ff;
-        }
+<section class="detail-container">
 
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-    </style>
-</head>
+    <a href="{% url 'home' %}" class="back-link">
+        ← Voltar para equipamentos
+    </a>
 
-<body>
-    <div class="container">
-        <a href="{% url 'home' %}">← Voltar para a lista</a>
+    <header class="equipment-header">
+
+        <span class="equipment-badge">
+            EQUIPAMENTO
+        </span>
+
         <h1>{{ equipamento.nome }}</h1>
-        <p><strong>Descrição:</strong> {{ equipamento.descricao }}</p>
 
-        <h2>🎥 Vídeos e Instruções de Uso</h2>
-        {% for conteudo in conteudos %}
-        <div class="video-box">
-            <h3>{{ conteudo.titulo }}</h3>
-            <p>{{ conteudo.descricao }}</p>
-            <p><a href="{{ conteudo.link_video }}" target="_blank">Assistir ao vídeo tutorial →</a></p>
+        <p>
+            {{ equipamento.descricao }}
+        </p>
+
+    </header>
+
+
+    <section class="content-section">
+
+        <div class="section-title">
+
+            <div>
+                <span class="section-label">
+                    CONTEÚDO
+                </span>
+
+                <h2>
+                    Vídeos e instruções de uso
+                </h2>
+            </div>
+
         </div>
-        {% empty %}
-        <p>Nenhum vídeo cadastrado para este equipamento ainda.</p>
-        {% endfor %}
-    </div>
-</body>
 
-</html>
+
+        <div class="content-grid">
+
+            {% for conteudo in conteudos %}
+
+            <article class="content-card">
+
+                <div class="video-icon">
+                    ▶
+                </div>
+
+                <div class="content-info">
+
+                    <span class="content-type">
+                        VÍDEO TUTORIAL
+                    </span>
+
+                    <h3>
+                        {{ conteudo.titulo }}
+                    </h3>
+
+                    <p>
+                        {{ conteudo.descricao }}
+                    </p>
+
+                </div>
+
+                <a
+                    href="{{ conteudo.link_video }}"
+                    target="_blank"
+                    class="watch-button"
+                >
+                    Assistir tutorial
+                    <span>→</span>
+                </a>
+
+            </article>
+
+            {% empty %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ▶
+                </div>
+
+                <h3>
+                    Nenhum conteúdo disponível
+                </h3>
+
+                <p>
+                    Ainda não existem vídeos ou instruções
+                    cadastrados para este equipamento.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}
+

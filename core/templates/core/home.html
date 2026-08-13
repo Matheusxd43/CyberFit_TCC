@@ -1,49 +1,129 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+{% extends 'core/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>CyberFit - Equipamentos</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f4f4f9;
-        }
+{% block title %}
+CyberFit - Equipamentos
+{% endblock %}
 
-        h1 {
-            color: #333;
-        }
+{% block content %}
 
-        .card {
-            background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+<section class="home-container">
 
-        a {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
-</head>
+    <div class="hero">
 
-<body>
-    <h1>🏋️‍♂️ CyberFit - Painel do Aluno</h1>
-    <h2>Equipamentos Disponíveis</h2>
+    <div class="hero-content">
 
-    {% for equipamento in equipamentos %}
-    <div class="card">
-        <h3>{{ equipamento.nome }}</h3>
-        <p>{{ equipamento.descricao }}</p>
-        <a href="{% url 'detalhe_equipamento' equipamento.pk %}">Ver vídeos e instruções →</a>
+        <span class="hero-badge">
+            ⚡ TREINO INTELIGENTE
+        </span>
+
+        <h1>
+            Aprenda.
+            <span>Treine melhor.</span>
+            Evolua com segurança.
+        </h1>
+
+        <p>
+            Acesse instruções e vídeos de cada equipamento
+            de forma rápida, prática e segura.
+        </p>
+
+        <div class="hero-actions">
+
+            <a href="#equipamentos" class="hero-button">
+                Explorar equipamentos
+                <span>→</span>
+            </a>
+
+            <div class="hero-info">
+                <span class="hero-info-icon">✓</span>
+
+                <span>
+                    Conteúdo rápido e acessível
+                </span>
+            </div>
+
+        </div>
+
     </div>
-    {% empty %}
-    <p>Nenhum equipamento cadastrado ainda. Cadastre alguns no painel administrativo!</p>
-    {% endfor %}
-</body>
 
-</html>
+</div>
+
+
+    <section class="equipamentos-section" id="equipamentos">
+
+        <div class="section-header">
+            <div>
+                <span class="section-label">TREINAMENTO</span>
+                <h2>Equipamentos disponíveis</h2>
+            </div>
+
+            <span class="equipment-count">
+                {{ equipamentos|length }} disponíveis
+            </span>
+        </div>
+
+
+        <div class="cards-grid">
+
+            {% for equipamento in equipamentos %}
+
+            <article class="equipment-card">
+
+                <div class="card-icon">
+    <span class="dumbbell-icon">
+        <span class="weight weight-left"></span>
+        <span class="bar"></span>
+        <span class="weight weight-right"></span>
+    </span>
+</div>
+
+                <div class="card-content">
+
+                    <span class="card-category">
+                        EQUIPAMENTO
+                    </span>
+
+                    <h3>{{ equipamento.nome }}</h3>
+
+                    {% if equipamento.descricao %}
+    <p>{{ equipamento.descricao }}</p>
+{% else %}
+    <p class="card-description-empty">
+        Consulte as instruções e conteúdos disponíveis para este equipamento.
+    </p>
+{% endif %}
+
+                </div>
+
+                <a
+                    href="{% url 'detalhe_equipamento' equipamento.pk %}"
+                    class="card-link"
+                >
+                    Ver instruções
+                    <span>→</span>
+                </a>
+
+            </article>
+
+            {% empty %}
+
+            <div class="empty-state">
+                <div class="empty-icon">🏋️</div>
+
+                <h3>Nenhum equipamento disponível</h3>
+
+                <p>
+                    Cadastre equipamentos no painel administrativo
+                    para que eles apareçam aqui.
+                </p>
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</section>
+
+{% endblock %}

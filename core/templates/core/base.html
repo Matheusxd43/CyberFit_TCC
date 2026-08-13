@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CyberFit{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+
+   
+    {% block extra_css %}
+    {% endblock %}
+</head>
+
+<body>
+
+    <header class="navbar">
+    <div class="navbar-content">
+
+        <a href="{% url 'home' %}" class="logo">
+            <span class="logo-icon">⚡</span>
+
+            <span class="logo-text">
+                CYBER<span>FIT</span>
+            </span>
+        </a>
+
+       <nav class="navbar-menu">
+    <a href="{% url 'home' %}"
+       class="navbar-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+        Início
+    </a>
+
+    <a href="{% url 'home' %}#equipamentos"
+       class="navbar-link {% if request.resolver_match.url_name == 'detalhe_equipamento' %}active{% endif %}">
+        Equipamentos
+    </a>
+</nav>
+
+    </div>
+</header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        CyberFit • Treine com mais segurança
+    </footer>
+
+</body>
+
+</html>

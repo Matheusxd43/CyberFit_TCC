@@ -1,0 +1,903 @@
+{% extends "admin/base.html" %}
+
+{% block title %}
+{% if subtitle %}{{ subtitle }} | {% endif %}CyberFit Admin
+{% endblock %}
+
+{% block branding %}
+
+<div class="cyberfit-brand">
+    <div class="cyberfit-logo-icon">⚡</div>
+
+    <div class="cyberfit-logo-text">
+        CYBER<span>FIT</span>
+        <small>ADMIN</small>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+
+{% block extrahead %}
+{{ block.super }}
+
+<style>
+
+    /* =========================
+       CORES GERAIS DO ADMIN
+    ========================== */
+
+    :root {
+        --primary: #00a8ff;
+        --secondary: #0087cc;
+        --accent: #00a8ff;
+
+        --body-fg: #dce5ec;
+        --body-bg: #080d12;
+
+        --header-bg: #0d141b;
+        --header-color: #ffffff;
+
+        --breadcrumbs-bg: #101820;
+        --breadcrumbs-fg: #8f9ba6;
+
+        --link-fg: #00a8ff;
+        --link-hover-color: #4ec5ff;
+
+        --hairline-color: rgba(255,255,255,0.08);
+        --border-color: rgba(255,255,255,0.08);
+
+        --darkened-bg: #0c1319;
+        --selected-bg: rgba(0,168,255,0.08);
+        --selected-row: rgba(0,168,255,0.06);
+    }
+
+
+    /* =========================
+       BODY
+    ========================== */
+
+    html,
+    body {
+        background: #080d12;
+        color: #dce5ec;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+    }
+
+    body {
+        min-height: 100vh;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    #header {
+        min-height: 72px;
+
+        padding: 0 32px;
+
+        display: flex;
+        align-items: center;
+
+        background: #0d141b;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.07);
+
+        color: white;
+    }
+
+    #branding {
+        display: flex;
+        align-items: center;
+    }
+
+    .cyberfit-brand {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+    }
+
+    .cyberfit-logo-icon {
+        width: 38px;
+        height: 38px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+            rgba(0,168,255,0.10);
+
+        border:
+            1px solid rgba(0,168,255,0.20);
+
+        font-size: 18px;
+    }
+
+    .cyberfit-logo-text {
+        color: #ffffff;
+
+        font-size: 20px;
+        font-weight: 800;
+
+        letter-spacing: 1.5px;
+    }
+
+    .cyberfit-logo-text span {
+        color: #00a8ff;
+    }
+
+    .cyberfit-logo-text small {
+        margin-left: 8px;
+
+        padding: 4px 7px;
+
+        border-radius: 6px;
+
+        background:
+            rgba(0,168,255,0.10);
+
+        color: #00a8ff;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        letter-spacing: 1px;
+    }
+
+
+    /* =========================
+       USUÁRIO / LOGOUT
+    ========================== */
+
+    #user-tools {
+        margin-left: auto;
+
+        color: #83919d;
+
+        font-size: 12px;
+    }
+
+    #user-tools a {
+        color: #b9c5ce;
+
+        transition: 0.2s;
+    }
+
+    #user-tools a:hover {
+        color: #00a8ff;
+    }
+
+
+    /* =========================
+       BREADCRUMBS
+    ========================== */
+
+    div.breadcrumbs {
+        padding: 14px 32px;
+
+        background: #0b1117;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.06);
+
+        color: #74818c;
+    }
+
+    div.breadcrumbs a {
+        color: #00a8ff;
+    }
+
+
+    /* =========================
+       ÁREA PRINCIPAL
+    ========================== */
+
+    #content {
+        padding: 32px;
+    }
+
+    #content-main {
+        max-width: 1500px;
+    }
+
+    h1 {
+        color: #ffffff;
+
+        font-size: 28px;
+
+        font-weight: 700;
+
+        letter-spacing: -0.5px;
+    }
+
+    h2,
+    h3 {
+        color: #ffffff;
+    }
+
+
+    /* =========================
+       SIDEBAR
+    ========================== */
+
+    #nav-sidebar {
+        background: #0b1117;
+
+        border-right:
+            1px solid rgba(255,255,255,0.07);
+    }
+
+    #nav-sidebar .module {
+        background: transparent;
+    }
+
+    #nav-sidebar .current-model {
+        background:
+            rgba(0,168,255,0.08);
+    }
+
+    #nav-sidebar a {
+        color: #b4c0ca;
+    }
+
+    #nav-sidebar a:hover {
+        color: #00a8ff;
+    }
+
+    #nav-sidebar .current-app .section {
+        color: #00a8ff;
+    }
+
+    #nav-filter {
+        background: #101820;
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+
+        color: #dce5ec;
+
+        border-radius: 8px;
+    }
+
+
+    /* =========================
+       MÓDULOS / CARDS
+    ========================== */
+
+    .module {
+        overflow: hidden;
+
+        background:
+            linear-gradient(
+                145deg,
+                #111820,
+                #0d1319
+            );
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+
+        border-radius: 14px;
+    }
+
+    .module h2,
+    .module caption,
+    .inline-group h2 {
+        padding: 14px 18px;
+
+        background: #101820;
+
+        color: #ffffff;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        letter-spacing: 0.5px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.07);
+    }
+
+
+    /* =========================
+       TABELAS
+    ========================== */
+
+    #result_list {
+        overflow: hidden;
+
+        border-radius: 12px;
+    }
+
+    #result_list thead th {
+        padding: 14px;
+
+        background: #101820;
+
+        color: #8f9ba6;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.08);
+
+        font-size: 11px;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.8px;
+    }
+
+    #result_list tbody tr {
+        background: #0d141b;
+
+        transition: 0.2s;
+    }
+
+    #result_list tbody tr:nth-child(even) {
+        background: #0c1218;
+    }
+
+    #result_list tbody tr:hover {
+        background:
+            rgba(0,168,255,0.05);
+    }
+
+    #result_list td,
+    #result_list th {
+        padding: 15px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.05);
+
+        color: #c5d0d8;
+    }
+
+    #result_list a {
+        color: #ffffff;
+
+        font-weight: 600;
+    }
+
+    #result_list a:hover {
+        color: #00a8ff;
+    }
+
+
+    /* =========================
+       FORMULÁRIOS
+    ========================== */
+
+    input,
+    textarea,
+    select,
+    .vTextField {
+        background: #0a1117 !important;
+
+        color: #dce5ec !important;
+
+        border:
+            1px solid rgba(255,255,255,0.10) !important;
+
+        border-radius: 8px !important;
+
+        padding: 10px 12px !important;
+
+        transition: 0.2s;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        border-color:
+            rgba(0,168,255,0.65) !important;
+
+        outline: none !important;
+
+        box-shadow:
+            0 0 0 3px rgba(0,168,255,0.08);
+    }
+
+    label {
+        color: #c8d2da;
+
+        font-weight: 600;
+    }
+
+    .help {
+        color: #6f7d88 !important;
+    }
+
+    .form-row {
+        padding: 18px;
+
+        border-bottom:
+            1px solid rgba(255,255,255,0.06);
+    }
+
+
+    /* =========================
+       BOTÕES
+    ========================== */
+
+    .button,
+    input[type="submit"],
+    input[type="button"],
+    .submit-row input,
+    a.button {
+        padding: 10px 16px !important;
+
+        background: #00a8ff !important;
+
+        color: #061018 !important;
+
+        border: none !important;
+
+        border-radius: 8px !important;
+
+        font-weight: 700 !important;
+
+        transition: 0.2s;
+    }
+
+    .button:hover,
+    input[type="submit"]:hover,
+    input[type="button"]:hover,
+    .submit-row input:hover,
+    a.button:hover {
+        background: #30b8ff !important;
+
+        transform: translateY(-1px);
+    }
+
+    .submit-row {
+        padding: 16px;
+
+        background: #0d141b;
+
+        border:
+            1px solid rgba(255,255,255,0.07);
+
+        border-radius: 12px;
+    }
+
+
+    /* BOTÃO DE EXCLUIR */
+
+    .deletelink,
+    .deletelink-box a {
+        background: rgba(255,72,72,0.10) !important;
+
+        color: #ff6969 !important;
+
+        border:
+            1px solid rgba(255,72,72,0.20) !important;
+
+        border-radius: 8px !important;
+
+        padding: 10px 14px !important;
+    }
+
+
+    /* =========================
+       SEARCH
+    ========================== */
+
+    #toolbar {
+        padding: 14px;
+
+        background: #0d141b;
+
+        border:
+            1px solid rgba(255,255,255,0.07);
+
+        border-radius: 12px;
+
+        margin-bottom: 18px;
+    }
+
+    #searchbar {
+        min-width: 300px;
+    }
+
+
+    /* =========================
+       FILTROS
+    ========================== */
+
+    #changelist-filter {
+        background: #0d141b;
+
+        border:
+            1px solid rgba(255,255,255,0.07);
+
+        border-radius: 12px;
+
+        overflow: hidden;
+    }
+
+    #changelist-filter h2 {
+        background: #101820;
+
+        color: #ffffff;
+    }
+
+    #changelist-filter h3 {
+        color: #8e9aa5;
+    }
+
+    #changelist-filter a {
+        color: #aab7c1;
+    }
+
+    #changelist-filter li.selected a {
+        color: #00a8ff;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================
+       MENSAGENS
+    ========================== */
+
+    ul.messagelist li {
+        margin: 15px 32px 0;
+
+        padding: 14px 18px;
+
+        border-radius: 10px;
+
+        background:
+            rgba(48,190,110,0.12);
+
+        color: #8ae6b1;
+
+        border:
+            1px solid rgba(48,190,110,0.20);
+    }
+
+
+    /* =========================
+       ACTION BAR
+    ========================== */
+
+    .actions {
+        padding: 12px !important;
+
+        background: #0d141b !important;
+
+        border-radius: 10px;
+    }
+
+    .actions select {
+        margin-right: 8px;
+    }
+
+
+    /* =========================
+       LINKS
+    ========================== */
+
+    a:link,
+    a:visited {
+        color: #00a8ff;
+    }
+
+    a:hover {
+        color: #60ceff;
+    }
+
+
+    /* =========================
+       DASHBOARD
+    ========================== */
+
+    .dashboard #content {
+        width: auto;
+    }
+
+    .dashboard .module table th {
+        width: 100%;
+    }
+
+    .dashboard .module {
+        margin-bottom: 20px;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 800px) {
+
+        #header {
+            padding: 0 18px;
+        }
+
+        .cyberfit-logo-text {
+            font-size: 17px;
+        }
+
+        .cyberfit-logo-text small {
+            display: none;
+        }
+
+        #content {
+            padding: 20px 14px;
+        }
+
+        div.breadcrumbs {
+            padding: 12px 16px;
+        }
+
+        #user-tools {
+            font-size: 10px;
+        }
+
+        #searchbar {
+            min-width: 180px;
+        }
+    }
+    #nav-sidebar {
+    display: none !important;
+}
+
+.main.shifted > #nav-sidebar + .content {
+    max-width: 100%;
+}
+
+#main {
+    padding-left: 0 !important;
+}
+
+.main {
+    grid-template-columns: 1fr !important;
+}
+/* =========================
+   BOTÃO "ADICIONAR"
+========================== */
+
+.object-tools {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 22px;
+}
+
+.object-tools li {
+    margin: 0;
+}
+
+.object-tools a.addlink {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 0 18px !important;
+
+    border-radius: 10px !important;
+
+    background: #00a8ff !important;
+
+    color: #061018 !important;
+
+    font-size: 13px !important;
+    font-weight: 800 !important;
+
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+
+    box-shadow:
+        0 8px 24px rgba(0, 168, 255, 0.18);
+
+    transition: 0.2s;
+}
+
+.object-tools a.addlink:hover {
+    background: #31baff !important;
+
+    color: #061018 !important;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 168, 255, 0.28);
+}
+
+.object-tools a.addlink::before {
+    content: "+";
+    margin-right: 8px;
+
+    font-size: 19px;
+    line-height: 1;
+}
+/* =========================
+   CABEÇALHO DAS LISTAGENS
+========================== */
+
+.cyberfit-list-header {
+    margin-bottom: 26px;
+}
+
+.cyberfit-list-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #00a8ff;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.8px;
+}
+
+.cyberfit-list-header h1 {
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 30px;
+    font-weight: 800;
+
+    letter-spacing: -0.7px;
+}
+
+.cyberfit-list-header p {
+    margin: 0;
+
+    color: #82909b;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   LAYOUT DA LISTAGEM
+========================== */
+
+#changelist {
+    max-width: 1250px;
+}
+
+#changelist-form {
+    overflow: hidden;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    border-radius: 14px;
+
+    background: #0d141b;
+}
+
+
+/* BUSCA */
+
+#toolbar {
+    margin: 0 !important;
+
+    padding: 18px !important;
+
+    border: none !important;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.07) !important;
+
+    border-radius: 0 !important;
+
+    background: #101820 !important;
+}
+
+#toolbar form {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+#searchbar {
+    width: 330px;
+    min-height: 42px;
+}
+
+
+/* AÇÕES */
+
+.actions {
+    margin: 0 !important;
+
+    padding: 14px 18px !important;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.07);
+
+    border-radius: 0 !important;
+
+    background: #0d141b !important;
+}
+
+
+/* TABELA */
+
+.results {
+    overflow: hidden;
+}
+
+#result_list {
+    width: 100%;
+
+    margin: 0;
+
+    border-radius: 0;
+}
+
+#result_list thead th {
+    padding: 13px 18px;
+}
+
+#result_list td,
+#result_list th {
+    padding: 16px 18px;
+}
+
+#result_list tbody tr:hover {
+    background: rgba(0,168,255,0.06);
+}
+
+
+/* CONTADOR INFERIOR */
+
+.paginator {
+    margin: 0 !important;
+
+    padding: 15px 18px !important;
+
+    border-top:
+        1px solid rgba(255,255,255,0.07);
+
+    background: #101820;
+}
+
+
+/* BOTÃO ADICIONAR MAIS BEM POSICIONADO */
+
+.object-tools {
+    position: absolute;
+    top: 145px;
+    right: 48px;
+
+    margin: 0 !important;
+}
+
+.object-tools a.addlink {
+    min-height: 46px;
+    padding: 0 20px !important;
+}
+.object-tools {
+    position: absolute;
+    top: 145px;
+    right: 48px;
+
+    margin: 0 !important;
+}
+#content {
+    position: relative;
+}
+
+</style>
+
+{% endblock %}
