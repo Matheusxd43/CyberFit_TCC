@@ -10,43 +10,43 @@ CyberFit - Equipamentos
 
     <div class="hero">
 
-    <div class="hero-content">
+        <div class="hero-content">
 
-        <span class="hero-badge">
-            ⚡ TREINO INTELIGENTE
-        </span>
+            <span class="hero-badge">
+                ⚡ TREINO INTELIGENTE
+            </span>
 
-        <h1>
-            Aprenda.
-            <span>Treine melhor.</span>
-            Evolua com segurança.
-        </h1>
+            <h1>
+                Aprenda.
+                <span>Treine melhor.</span>
+                Evolua com segurança.
+            </h1>
 
-        <p>
-            Acesse instruções e vídeos de cada equipamento
-            de forma rápida, prática e segura.
-        </p>
+            <p>
+                Acesse instruções e vídeos de cada equipamento
+                de forma rápida, prática e segura.
+            </p>
 
-        <div class="hero-actions">
+            <div class="hero-actions">
 
-            <a href="#equipamentos" class="hero-button">
-                Explorar equipamentos
-                <span>→</span>
-            </a>
+                <a href="#equipamentos" class="hero-button">
+                    Explorar equipamentos
+                    <span>→</span>
+                </a>
 
-            <div class="hero-info">
-                <span class="hero-info-icon">✓</span>
+                <div class="hero-info">
+                    <span class="hero-info-icon">✓</span>
 
-                <span>
-                    Conteúdo rápido e acessível
-                </span>
+                    <span>
+                        Conteúdo rápido e acessível
+                    </span>
+                </div>
+
             </div>
 
         </div>
 
     </div>
-
-</div>
 
 
     <section class="equipamentos-section" id="equipamentos">
@@ -70,12 +70,12 @@ CyberFit - Equipamentos
             <article class="equipment-card">
 
                 <div class="card-icon">
-    <span class="dumbbell-icon">
-        <span class="weight weight-left"></span>
-        <span class="bar"></span>
-        <span class="weight weight-right"></span>
-    </span>
-</div>
+                    <span class="dumbbell-icon">
+                        <span class="weight weight-left"></span>
+                        <span class="bar"></span>
+                        <span class="weight weight-right"></span>
+                    </span>
+                </div>
 
                 <div class="card-content">
 
@@ -86,19 +86,16 @@ CyberFit - Equipamentos
                     <h3>{{ equipamento.nome }}</h3>
 
                     {% if equipamento.descricao %}
-    <p>{{ equipamento.descricao }}</p>
-{% else %}
-    <p class="card-description-empty">
-        Consulte as instruções e conteúdos disponíveis para este equipamento.
-    </p>
-{% endif %}
+                    <p>{{ equipamento.descricao }}</p>
+                    {% else %}
+                    <p class="card-description-empty">
+                        Consulte as instruções e conteúdos disponíveis para este equipamento.
+                    </p>
+                    {% endif %}
 
                 </div>
 
-                <a
-                    href="{% url 'detalhe_equipamento' equipamento.pk %}"
-                    class="card-link"
-                >
+                <a href="{% url 'detalhe_equipamento' equipamento.pk %}" class="card-link">
                     Ver instruções
                     <span>→</span>
                 </a>
