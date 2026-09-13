@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-=5p!t3p7=xd+1k=w+s@1ou(ffa6az3gu1hjhbm^g^yc!6z*un*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*'] # Para testes na nuvem, o asterisco libera o domínio gerado pelo Render
 
 
 # Application definition
