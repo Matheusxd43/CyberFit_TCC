@@ -22,6 +22,27 @@ class ConteudoDigital(models.Model):
     def __str__(self):
         return self.titulo
 
+    def get_embed_url(self):
+        """Converte links normais do YouTube para o formato embed"""
+        url = self.link_video
+        if not url:
+            return ""
+        if "youtu.be/" in url:
+            # Ex: https://youtu.be/VIDEO_ID
+            try:
+                video_id = url.split("youtu.be/")[1].split("?")[0]
+                return f"https://www.youtube.com/embed/{video_id}"
+            except IndexError:
+                return url
+        elif "watch?v=" in url:
+            # Ex: https://www.youtube.com/watch?v=VIDEO_ID
+            try:
+                video_id = url.split("watch?v=")[1].split("&")[0]
+                return f"https://www.youtube.com/embed/{video_id}"
+            except IndexError:
+                return url
+        return url
+
 
 class AvaliacaoUsuario(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -36,3 +57,4 @@ class AvaliacaoUsuario(models.Model):
 
     def __str__(self):
         return f"Nota {self.nota} para {self.conteudo.titulo}"
+    
