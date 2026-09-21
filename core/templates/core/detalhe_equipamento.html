@@ -10,23 +10,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <style>
-    .video-container {
-        position: relative;
-        width: 100%;
-        padding-bottom: 56.25%;
-        height: 0;
+    .video-fallback-container {
         margin-top: 15px;
         margin-bottom: 15px;
+        padding: 30px 20px;
+        background: #1a1a1a;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #333;
     }
 
-    .video-container iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
+    .btn-youtube {
+        display: inline-block;
+        margin-top: 15px;
+        background-color: #ff0000;
+        color: #ffffff;
+        padding: 12px 24px;
         border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1rem;
+        transition: background 0.2s;
+    }
+
+    .btn-youtube:hover {
+        background-color: #cc0000;
+        color: #ffffff;
     }
 
     .qrcode-section {
@@ -98,10 +107,13 @@
                     </p>
                 </div>
 
-                <!-- Player Incorporado do YouTube -->
+                <!-- Botão de Acesso Direto ao YouTube (Plano B Anti-Erro 153) -->
                 {% if conteudo.link_video %}
-                <div class="video-container">
-                    <iframe src="{{ conteudo.get_embed_url }}" title="{{ conteudo.titulo }}" allowfullscreen></iframe>
+                <div class="video-fallback-container">
+                    <p style="color: #ccc; margin-bottom: 5px;">Assista à demonstração oficial do exercício:</p>
+                    <a href="{{ conteudo.link_video }}" target="_blank" class="btn-youtube">
+                        ▶ Assistir Vídeo no YouTube
+                    </a>
                 </div>
                 {% endif %}
 
