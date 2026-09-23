@@ -1,10 +1,13 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{% block title %}CyberFit{% endblock %}</title>
 
     <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
@@ -16,6 +19,7 @@
         /* ===================================================
            BLOQUEIO GLOBAL DE TRANSBORDAMENTO LATERAL
            =================================================== */
+
         html,
         body {
             overflow-x: hidden !important;
@@ -31,10 +35,14 @@
             box-sizing: inherit;
         }
 
+
         /* ===================================================
-           NAVBAR RESPONSIVA (MOBILE: Telas até 768px)
+           NAVBAR RESPONSIVA
+           MOBILE: TELAS ATÉ 768px
            =================================================== */
+
         @media (max-width: 768px) {
+
             .navbar {
                 padding: 10px 14px !important;
                 width: 100% !important;
@@ -50,7 +58,9 @@
                 max-width: 100% !important;
             }
 
+
             /* Logotipo compacto */
+
             .logo {
                 font-size: 1.15rem !important;
                 display: inline-flex !important;
@@ -58,7 +68,9 @@
                 gap: 6px !important;
             }
 
+
             /* Container de navegação flexível */
+
             .navbar-menu {
                 display: flex !important;
                 flex-wrap: wrap !important;
@@ -66,79 +78,178 @@
                 gap: 8px !important;
             }
 
+
+            /* Links da navbar */
+
             .navbar-link {
                 font-size: 0.82rem !important;
                 padding: 4px 6px !important;
             }
 
+
             /* Botão Área Restrita no mobile */
+
             .btn-restrita-mobile {
                 padding: 4px 8px !important;
                 font-size: 0.78rem !important;
                 white-space: nowrap !important;
             }
+
         }
     </style>
+
 </head>
+
 
 <body>
 
+
+    <!-- ===================================================
+         NAVBAR
+         =================================================== -->
+
     <header class="navbar">
+
         <div class="navbar-content">
 
+
+            <!-- LOGO -->
+
             <a href="{% url 'home' %}" class="logo">
+
                 <span class="logo-icon">⚡</span>
+
                 <span class="logo-text">
                     CYBER<span>FIT</span>
                 </span>
+
             </a>
 
+
+            <!-- MENU -->
+
             <nav class="navbar-menu">
+
+
+                <!-- INÍCIO -->
+
                 <a href="{% url 'home' %}"
                     class="navbar-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
                     Início
                 </a>
+
+
+                <!-- EQUIPAMENTOS -->
 
                 <a href="{% url 'home' %}#equipamentos"
                     class="navbar-link {% if request.resolver_match.url_name == 'detalhe_equipamento' %}active{% endif %}">
                     Equipamentos
                 </a>
 
+
                 {% if user.is_authenticated and user.is_staff %}
-                <!-- VISÃO DO ADMINISTRADOR LOGADO -->
-                <span
-                    style="background: rgba(234, 179, 8, 0.2); color: #eab308; padding: 3px 8px; border-radius: 16px; font-size: 0.75rem; font-weight: bold;">
+
+
+                <!-- ===================================================
+                         VISÃO DO ADMINISTRADOR LOGADO
+                         =================================================== -->
+
+
+                <!-- IDENTIFICAÇÃO DO ADMIN -->
+
+                <span style="
+                            background: rgba(234, 179, 8, 0.2);
+                            color: #eab308;
+                            padding: 3px 8px;
+                            border-radius: 16px;
+                            font-size: 0.75rem;
+                            font-weight: bold;
+                        ">
                     🛡️ Admin
                 </span>
+
+
+                <!-- CADASTRAR EQUIPAMENTO -->
+
                 <a href="/admin/core/equipamento/add/" class="navbar-link" style="color: #22c55e;">
                     + Cadastrar
                 </a>
+
+
+                <!-- PAINEL GERAL -->
+
                 <a href="/admin/" class="navbar-link" style="color: #00d4ff;">
                     Painel Geral
                 </a>
-                <a href="/admin/logout/" class="navbar-link" style="color: #ef4444;">
+
+
+                <!-- ===================================================
+                         LOGOUT
+                         Mantém a aparência original do link "Sair"
+                         =================================================== -->
+
+                <form id="logout-form" action="/admin/logout/" method="post" style="display: none;">
+
+                    {% csrf_token %}
+
+                </form>
+
+
+                <a href="#" class="navbar-link" style="color: #ef4444;"
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     Sair
                 </a>
+
+
                 {% else %}
-                <!-- VISÃO DO ALUNO / VISITANTE COMUM -->
-                <a href="/admin/login/" class="navbar-link btn-restrita-mobile"
-                    style="border: 1px solid #00d4ff; padding: 5px 10px; border-radius: 6px; color: #00d4ff;">
+
+
+                <!-- ===================================================
+                         VISÃO DO ALUNO / VISITANTE COMUM
+                         =================================================== -->
+
+                <a href="/admin/login/" class="navbar-link btn-restrita-mobile" style="
+                           border: 1px solid #00d4ff;
+                           padding: 5px 10px;
+                           border-radius: 6px;
+                           color: #00d4ff;
+                       ">
                     🔑 Área Restrita
                 </a>
+
+
                 {% endif %}
+
+
             </nav>
 
         </div>
+
     </header>
 
+
+    <!-- ===================================================
+         CONTEÚDO PRINCIPAL
+         =================================================== -->
+
     <main class="main-content">
+
         {% block content %}
         {% endblock %}
+
     </main>
 
+
+    <!-- ===================================================
+         RODAPÉ
+         =================================================== -->
+
     <footer class="footer">
+
         CyberFit • Treine com mais segurança
+
     </footer>
+
 
 </body>
 

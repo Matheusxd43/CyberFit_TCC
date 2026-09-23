@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from .models import Equipamento
 
 # Página principal que lista os equipamentos
@@ -14,3 +16,4 @@ def detalhe_equipamento(request, pk):
         'equipamento': equipamento,
         'conteudos': conteudos
     })
+    
