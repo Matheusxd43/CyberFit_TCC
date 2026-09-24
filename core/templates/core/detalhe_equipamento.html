@@ -55,6 +55,134 @@
         border-radius: 4px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
+
+    /* =========================
+   FEEDBACK
+========================= */
+
+.feedback-box {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 1px solid #1d3444;
+}
+
+.feedback-box h3 {
+    margin-top: 8px;
+    margin-bottom: 5px;
+    color: #ffffff;
+}
+
+.feedback-description {
+    color: #8fa6b8;
+    margin-bottom: 15px;
+}
+
+/* ESTRELAS */
+
+.rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 38px;
+    color: #354451;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+    color: #ffc107;
+}
+
+.rating label:hover {
+    transform: scale(1.12);
+}
+
+
+/* COMENTÁRIO */
+
+.feedback-textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: #091219;
+    border: 1px solid #1d4055;
+    border-radius: 8px;
+    color: #ffffff;
+    padding: 14px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+.feedback-textarea:focus {
+    border-color: #00aaff;
+}
+
+
+/* BOTÃO */
+
+.btn-feedback {
+    background: #00aaff;
+    color: #001018;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 22px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-feedback:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.video-container {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-top: 20px;
+
+    background: #000;
+
+    border: 1px solid #1d4055;
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+.video-container iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+}
+
+.youtube-link {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.youtube-link a {
+    color: #00aaff;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.youtube-link a:hover {
+    text-decoration: underline;
+}
 </style>
 
 <section class="detail-container">
@@ -89,56 +217,139 @@
 
         <div class="content-grid">
 
-            {% for conteudo in conteudos %}
+    {% for conteudo in conteudos %}
 
-            <article class="content-card" style="display: block;">
+    <article class="content-card" style="display: block;">
 
-                <div class="content-info">
-                    <span class="content-type">
-                        VÍDEO TUTORIAL
-                    </span>
+        <div class="content-info">
+            <span class="content-type">
+                VÍDEO TUTORIAL
+            </span>
 
-                    <h3>
-                        {{ conteudo.titulo }}
-                    </h3>
+            <h3>
+                {{ conteudo.titulo }}
+            </h3>
 
-                    <p>
-                        {{ conteudo.descricao }}
-                    </p>
+            <p>
+                {{ conteudo.descricao }}
+            </p>
+        </div>
+
+        {% if conteudo.link_video %}
+
+<div class="video-container">
+    <iframe
+        src="{{ conteudo.get_embed_url }}"
+        title="{{ conteudo.titulo }}"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+    </iframe>
+</div>
+
+<div class="youtube-link">
+    <a href="{{ conteudo.link_video }}" target="_blank" rel="noopener noreferrer">
+        ▶ Abrir vídeo no YouTube
+    </a>
+</div>
+
+{% endif %}
+
+
+        <!-- ÁREA DE AVALIAÇÃO -->
+        <div class="feedback-box">
+
+            <span class="content-type">
+                FEEDBACK
+            </span>
+
+            <h3>O que você achou deste conteúdo?</h3>
+
+            <p class="feedback-description">
+                Sua avaliação nos ajuda a melhorar os conteúdos.
+            </p>
+
+            <form method="POST"
+                  action="{% url 'enviar_avaliacao' conteudo.id %}">
+
+                {% csrf_token %}
+
+                <!-- ESTRELAS -->
+                <div class="rating">
+
+                    <input type="radio"
+                           id="star5-{{ conteudo.id }}"
+                           name="nota"
+                           value="5"
+                           required>
+                    <label for="star5-{{ conteudo.id }}">★</label>
+
+                    <input type="radio"
+                           id="star4-{{ conteudo.id }}"
+                           name="nota"
+                           value="4">
+                    <label for="star4-{{ conteudo.id }}">★</label>
+
+                    <input type="radio"
+                           id="star3-{{ conteudo.id }}"
+                           name="nota"
+                           value="3">
+                    <label for="star3-{{ conteudo.id }}">★</label>
+
+                    <input type="radio"
+                           id="star2-{{ conteudo.id }}"
+                           name="nota"
+                           value="2">
+                    <label for="star2-{{ conteudo.id }}">★</label>
+
+                    <input type="radio"
+                           id="star1-{{ conteudo.id }}"
+                           name="nota"
+                           value="1">
+                    <label for="star1-{{ conteudo.id }}">★</label>
+
                 </div>
 
-                <!-- Botão de Acesso Direto ao YouTube (Plano B Anti-Erro 153) -->
-                {% if conteudo.link_video %}
-                <div class="video-fallback-container">
-                    <p style="color: #ccc; margin-bottom: 5px;">Assista à demonstração oficial do exercício:</p>
-                    <a href="{{ conteudo.link_video }}" target="_blank" class="btn-youtube">
-                        ▶ Assistir Vídeo no YouTube
-                    </a>
-                </div>
-                {% endif %}
+                <textarea
+                    name="comentario"
+                    class="feedback-textarea"
+                    placeholder="Deixe um comentário (opcional)"
+                    rows="4"></textarea>
 
-            </article>
+                <button type="submit" class="btn-feedback">
+                    Enviar avaliação
+                </button>
 
-            {% empty %}
-
-            <div class="empty-state">
-                <div class="empty-icon">
-                    ▶
-                </div>
-
-                <h3>
-                    Nenhum conteúdo disponível
-                </h3>
-
-                <p>
-                    Ainda não existem vídeos ou instruções
-                    cadastrados para este equipamento.
-                </p>
-            </div>
-
-            {% endfor %}
+            </form>
 
         </div>
+
+    </article>
+
+
+    {% empty %}
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            ▶
+        </div>
+
+        <h3>
+            Nenhum conteúdo disponível
+        </h3>
+
+        <p>
+            Ainda não existem vídeos ou instruções
+            cadastrados para este equipamento.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
 
         <!-- Seção do QR Code para a Apresentação do TCC -->
         <div class="qrcode-section">
@@ -153,9 +364,19 @@
 </section>
 
 <script>
-    // Gera o QR Code automaticamente usando a URL atual da página
+    // Endereço do computador na rede local
+    const servidor = "http://192.168.3.22:8000";
+
+    // ID do equipamento atual vindo do Django
+    const equipamentoId = "{{ equipamento.id }}";
+
+    // Monta automaticamente a URL deste equipamento
+    const urlEquipamento =
+        servidor + "/equipamento/" + equipamentoId + "/";
+
+    // Gera o QR Code
     new QRCode(document.getElementById("qrcode"), {
-        text: window.location.href,
+        text: urlEquipamento,
         width: 160,
         height: 160,
         colorDark: "#000000",
